@@ -83,7 +83,6 @@
     },
     methods: {
       emitSubmit() {
-        console.log("Submitting Review");
         fetch("http://localhost:3000/api/addReview", {
           method: "post",
           headers: {

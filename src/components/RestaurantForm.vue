@@ -21,6 +21,7 @@
                     m-0
                     focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" id="rating"
                     placeholder="Ruby's Cafe">
+                <h5 class="mb-0 font-medium text-xs leading-5 text-red-600 dark:text-white pb-0">{{addRestError}}</h5>
             </div>
             <div class="block form-group mb-6 text-left pb-2">
                 <label for="address" class="form-label inline-block mb-2 text-gray-700">Street Address</label>
@@ -81,7 +82,7 @@
         </div>
         <div class="block form-group mb-6 text-left pb-2">
             <label for="website" class="form-label inline-block mb-2 text-gray-700">Keywords</label>
-            <h5 class="mb-2 font-medium text-sm leading-5 dark:text-white text-gray-500 pb-4">Please some key words to describe the restaurant, seperated by commas</h5>
+            <h5 class="mb-0 font-medium text-sm leading-5 dark:text-white text-gray-500 pb-4">Please add some key words to describe the restaurant, seperated by commas</h5>
             <input v-model="restData[4]" required type="text" class="form-control
                 w-full
                 px-3
@@ -124,21 +125,36 @@
     name: 'RestForm',
     data() {
         return {
-            restData: []
+            restData: [],
+            addRestError: ""
         }
     },
     methods: {
       emitSubmit() {
-        fetch("http://localhost:3000/api/addRestaurant", {
-          method: "post",
-          headers: {
-            "Content-Type": "application/json"
-          },
-          body: JSON.stringify({name: this.restData[0], address: this.restData[1], website: this.restData[2], phone: this.restData[3], keywords: this.restData[4]})
-        })
+        fetch("http://localhost:3000/api/restaurants", {mode: "cors"})
         .then(response => response.json())
-        .then(() => this.$emit("restSubmitted", this.restData))
-        .catch(err => console.log("Error:", err));
+        .then(data => {
+          console.log("all restaurants: ", data);
+          const existingRestaurant = data.filter(restaurant => {
+            return restaurant.name == this.restData[0];
+          });
+          if(existingRestaurant.length > 0) {
+            this.addRestError = "Restaurant already exists. Please enter a different restaurant name";
+          } else {
+            fetch("http://localhost:3000/api/addRestaurant", {
+              method: "post",
+              headers: {
+                "Content-Type": "application/json"
+              },
+              body: JSON.stringify({name: this.restData[0], address: this.restData[1], website: this.restData[2], phone: this.restData[3], keywords: this.restData[4]})
+            })
+            .then(response => response.json())
+            .then(() => this.$emit("restSubmitted", this.restData))
+            .catch(err => console.log("Error:", err));
+          }
+        });
+
+        
       }
     }
   }

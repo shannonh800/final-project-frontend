@@ -8,6 +8,7 @@
   <body>
     <!--Basic setup for the website (app title, description, layout)-->
     <div class="grid grid-cols-9 gap-4">
+      <!--Search button-->
       <div class="md:col-span-3 pl-6 ml-6 pt-0 mt-0 text-left align-text-top mb-2 font-bold text-4xl leading-none dark:text-white">A Foodie's Guide</div>
       <input v-model="searchName" type="search" class="md:col-start-5 mr-0 pr-0 col-span-2 form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none" placeholder="Search" aria-label="Search" aria-describedby="button-addon2">
       <button @click="getFilteredRestaurants" class="md:col-start-7 max-w- btn inline-block px-4 mr-20 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out items-center" type="button" id="button-addon2">
@@ -79,19 +80,10 @@ export default {
     }
   },
   methods: {
-    checkRole() {
-      fetch("http://localhost:3000/api/role", {mode: "cors"})
-        .then(response => response.json())
-        .then(data => {
-          console.log(data);
-          this.adminRole = data.adminRole;
-        });
-    },
     loadAllRestaurants() {
       fetch("http://localhost:3000/api/restaurants", {mode: "cors"})
         .then(response => response.json())
         .then(data => {
-          console.log(data);
           this.restaurants = data;
 
           this.restaurants.map(restaurant => {
@@ -101,16 +93,7 @@ export default {
           })
         });
     },
-    hideLoginAndSignIn() {
-      this.loginNotSubmitted = false;
-      this.checkRole();
-      console.log("after checking role from login:", this.adminRole);
-    },
-    hideRegisterForm() {
-      this.registerNotSubmitted = false;
-    },
     hideRestCardAndDisplayDetails(restaurantName) {
-      console.log(restaurantName);
       this.restNotClicked = false;
       this.showRestDetail = true;
       this.chosenRestaurant = restaurantName;
@@ -119,22 +102,6 @@ export default {
     hideFormAddRest() {
       this.restNotSubmitted = false;
       this.loadAllRestaurants();
-    },
-    openLoginModal() {
-      this.loginModalShowing = true;
-      this.loginNotSubmitted = true;
-    },
-    closeLoginModal() {
-      this.loginModalShowing = false;
-      this.loginNotSubmitted = false;
-    },
-    openRegisterModal() {
-      this.registerModalShowing = true;
-      this.registerNotSubmitted = true;
-    },
-    closeRegisterModal() {
-      this.registerModalShowing = false;
-      this.registerNotSubmitted = false;
     },
     openRestModal() {
       this.restModalShowing = true;
@@ -148,7 +115,6 @@ export default {
       fetch("http://localhost:3000/api/restaurants", {mode: "cors"})
         .then(response => response.json())
         .then(data => {
-          console.log("all restaurants: ", data);
           this.restaurants = data.filter(restaurant => {
             return restaurant.name == this.searchName;
           });
@@ -156,7 +122,6 @@ export default {
     }
   },
   mounted() {
-    //this.checkRole();
     this.loadAllRestaurants();
   }
 }

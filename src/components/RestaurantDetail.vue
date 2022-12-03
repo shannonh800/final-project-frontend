@@ -93,7 +93,6 @@
           fetch("http://localhost:3000/api/reviews", {mode: "cors"})
           .then(response => response.json())
           .then(data => {
-            console.log(data);
             this.reviews = data;
           });
         }
