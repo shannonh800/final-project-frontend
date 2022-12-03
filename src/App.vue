@@ -27,8 +27,8 @@
             A Foodie's Guide comes in!
           </p>
           <p class="mt-2 pl-6 ml-6 leading-6 text-sm text-left text-gray-600">
-            A Foodie's Guide is a web app that allows users to browse restaurants in NYC and see its details in terms of what it sells, contact info, etc., 
-            but most importantly, other users' reviews of it. Admin users are able to add restaurants to the app.
+            A Foodie's Guide is a web app that allows users to browse and search for restaurants by name in NYC and see its details in terms of what it sells, contact info, etc., 
+            but most importantly, other users' reviews of it. Users are able to add restaurants to the app.
           </p>
         </div>
       </div>
