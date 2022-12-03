@@ -11,8 +11,7 @@ export default {
   name: "ModalTemplate",
   props: {
     showing: {
-      required: true,
-      type: Boolean
+      required: true
     }
   },
   methods: {

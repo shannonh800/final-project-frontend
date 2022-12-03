@@ -5,7 +5,7 @@
     <form @submit.prevent="emitSubmit">
       <div class="form-group mb-6">
         <label for="username" class="form-label inline-block mb-2 text-gray-700">Username</label>
-        <input v-model="loginData[0]" type="text" class="form-control
+        <input v-model="loginData[0]" required type="text" class="form-control
           block
           w-full
           px-3
@@ -24,7 +24,7 @@
       </div>
       <div class="form-group mb-6 text-left pb-2">
         <label for="exampleInputPassword1" class="form-label inline-block mb-2 text-gray-700">Password</label>
-        <input v-model="loginData[1]" type="password" class="form-control block
+        <input v-model="loginData[1]" required type="password" class="form-control block
           w-full
           px-3
           py-1.5
@@ -66,12 +66,12 @@ export default {
   name: 'LoginForm',
   data() {
         return {
-            loginData: []
+            loginData: [],
+            user: Object
         }
     },
   methods: {
     emitSubmit() {
-      this.$emit("loginClicked");
       fetch("http://localhost:3000/api/login", {
         method: "post",
         headers: {
@@ -79,7 +79,14 @@ export default {
         },
         body: JSON.stringify({username: this.loginData[0], password: this.loginData[1]})
       })
-      .catch(err => console.log("Error:", err));
+      .then(response => response.json())
+      .then(user => {
+        this.user = user;
+        console.log("User: ", this.user);
+        console.log("User role: ", this.user.role);
+        this.$emit("loginClicked");
+      })
+        .catch(err => console.log("Error:", err));
     }
   }
 }

@@ -9,7 +9,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                         Full Name
                     </label>
-                    <input v-model="userData[0]" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="fullName" type="text" placeholder="First Last">
+                    <input v-model="userData[0]" required class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="fullName" type="text" placeholder="First Last">
                     </div>
                 </div>
                 <div class="flex flex-wrap -mx-3 mb-4">
@@ -17,7 +17,7 @@
                     <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                         Username
                     </label>
-                    <input v-model="userData[1]" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="username" type="text" placeholder="someusername123">
+                    <input v-model="userData[1]" required class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="username" type="text" placeholder="someusername123">
                     </div>
                 </div>
             </div>
@@ -26,7 +26,7 @@
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-first-name">
                     Email Address
                 </label>
-                <input v-model="userData[2]" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="email" type="email" placeholder="myname@gmail.com">
+                <input v-model="userData[2]" required class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white" id="email" type="email" placeholder="myname@gmail.com">
                 </div>
             </div>
             <div class="flex flex-wrap -mx-3 mb-4">
@@ -34,7 +34,7 @@
                 <label class="block uppercase tracking-wide text-gray-700 text-xs font-bold mb-2" for="grid-password">
                     Password
                 </label>
-                <input v-model="userData[3]" class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="******************">
+                <input v-model="userData[3]" required class="appearance-none block w-full bg-gray-100 text-gray-700 border border-gray-200 rounded py-2 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-password" type="password" placeholder="******************">
                 <p class="text-gray-600 text-xs italic">Make it as long and as crazy as you'd like</p>
                 </div>
             </div>
@@ -44,7 +44,7 @@
                     Role
                 </label>
                 <div class="relative">
-                    <select v-model="userData[4]" class="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
+                    <select v-model="userData[4]" required class="block appearance-none w-full bg-gray-100 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500" id="grid-state">
                     <option value="user">User</option>
                     <option value="admin">Admin</option>
                     </select>
@@ -97,8 +97,9 @@ export default {
             },
             body: JSON.stringify({name: this.userData[0], username: this.userData[1], email: this.userData[2], password: this.userData[3], role: this.userData[4]})
         })
+        .then(response => response.json())
+        .then(() => this.$emit("registerClicked"))
         .catch(err => console.log("Error:", err));
-        this.$emit("registerClicked");
     }
   }
 }

@@ -6,7 +6,7 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="form-group mb-6 text-left">
                 <label for="name" class="form-label inline-block mb-2 text-gray-700">Restaurant Name</label>
-                <input v-model="restData[0]" type="text" class="form-control block
+                <input v-model="restData[0]" required type="text" class="form-control block
                     w-full
                     px-3
                     py-1.5
@@ -24,7 +24,7 @@
             </div>
             <div class="block form-group mb-6 text-left pb-2">
                 <label for="address" class="form-label inline-block mb-2 text-gray-700">Street Address</label>
-                <input v-model="restData[1]" type="text" class="form-control
+                <input v-model="restData[1]" required type="text" class="form-control
                 w-full
                     px-3
                     py-1.5
@@ -44,7 +44,7 @@
         <div class="grid grid-cols-2 gap-4">
             <div class="block form-group mb-6 text-left pb-2">
                 <label for="website" class="form-label inline-block mb-2 text-gray-700">Website</label>
-                <input v-model="restData[2]" type="url" class="form-control
+                <input v-model="restData[2]" required type="url" class="form-control
                 w-full
                     px-3
                     py-1.5
@@ -62,7 +62,7 @@
             </div>
             <div class="block form-group mb-6 text-left pb-2">
                 <label for="phone" class="form-label inline-block mb-2 text-gray-700">Phone Number</label>
-                <input v-model="restData[3]" type="text" class="form-control
+                <input v-model="restData[3]" required type="text" class="form-control
                 w-full
                     px-3
                     py-1.5
@@ -82,7 +82,7 @@
         <div class="block form-group mb-6 text-left pb-2">
             <label for="website" class="form-label inline-block mb-2 text-gray-700">Keywords</label>
             <h5 class="mb-2 font-medium text-sm leading-5 dark:text-white text-gray-500 pb-4">Please some key words to describe the restaurant, seperated by commas</h5>
-            <input v-model="restData[4]" type="text" class="form-control
+            <input v-model="restData[4]" required type="text" class="form-control
                 w-full
                 px-3
                 py-1.5
@@ -130,14 +130,15 @@
     methods: {
       emitSubmit() {
         fetch("http://localhost:3000/api/addRestaurant", {
-        method: "post",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({name: this.restData[0], address: this.restData[1], website: this.restData[2], phone: this.restData[3], keywords: this.restData[4]})
-      })
+          method: "post",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({name: this.restData[0], address: this.restData[1], website: this.restData[2], phone: this.restData[3], keywords: this.restData[4]})
+        })
+        .then(response => response.json())
+        .then(() => this.$emit("restSubmitted", this.restData))
         .catch(err => console.log("Error:", err));
-        this.$emit("restSubmitted", this.restData);
       }
     }
   }

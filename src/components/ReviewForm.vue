@@ -8,7 +8,7 @@
         </div>
         <div class="form-group mb-4 text-left">
           <label for="rating" class="form-label inline-block mb-2 text-gray-700">Rating (out of 5.0)</label>
-          <input v-model="rating" type="number" min="0.0" max="5.0" step="0.1" class="form-control block
+          <input v-model="reviewData[0]" required type="number" min="0.0" max="5.0" step="0.1" class="form-control block
             w-fit
             px-3
             py-1.5
@@ -26,7 +26,7 @@
         </div>
         <div class="block form-group mb-4 pb-2 text-left">
           <label for="commentary" class="form-label inline-block mb-2 text-gray-700">Commentary</label>
-          <textarea v-model="commentary" type="text" class="form-control
+          <textarea v-model="reviewData[1]" required type="text" class="form-control
             block
             w-full
             h-32
@@ -70,14 +70,29 @@
   <script>
   export default {
     name: 'ReviewForm',
+    data() {
+      return {
+        reviewData: []
+      }
+    },
+    props: {
+      restName: {
+        required: true,
+        type: String
+      }
+    },
     methods: {
       emitSubmit() {
-        this.$emit("reviewSubmitted");
-      },
-      addReviewToDb() {
-        fetch("http://localhost:8080/api/addReview", {method: "post", body: {rating: this.rating, commentary: this.commentary}})
+        console.log("Submitting Review");
+        fetch("http://localhost:3000/api/addReview", {
+          method: "post",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({restaurant: this.restName, rating: this.reviewData[0], commentary: this.reviewData[1]})
+        })
         .then(response => response.json())
-        .then(data => {console.log(data)});
+        .then(() => {this.$emit("reviewSubmitted")});
       }
     }
   }
